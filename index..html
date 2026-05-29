@@ -1,11 +1,1203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>アグリテック高等学院 - 大地とテクノロジーで、未来を耕す。</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: {
+              50: '#f2f8f3',
+              100: '#e1efe4',
+              600: '#2d6a3f',
+              700: '#1b4324',
+              800: '#112a17',
+              900: '#08140b',
+            },
+            lime: {
+              400: '#a3e635',
+              500: '#84cc16',
+              600: '#65a30d',
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* フェードインアニメーション用のクラス */
+    .fade-in-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-in-on-scroll.appear {
+      opacity: 1;
+      transform: translateY(0);
+    }
     
+    /* ヒーローの背景に重ねる近未来ドットパターン */
+    .hero-pattern {
+      background-image: radial-gradient(rgba(132, 204, 22, 0.15) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+  <!-- 擬似メール送信通知トースト -->
+  <div id="toast-notification" class="fixed top-24 right-4 z-50 max-w-sm w-full bg-forest-800 text-white p-4 rounded-2xl shadow-2xl border border-lime-500/30 transform translate-x-96 transition-transform duration-500 ease-out flex items-start gap-3">
+    <div class="p-1 bg-lime-500 text-forest-900 rounded-lg">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l8-5.333a2 2 0 012.22 0l8 5.333A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-2.25-1.5a2 2 0 00-2.22 0l-2.25 1.5" />
+      </svg>
+    </div>
+    <div class="flex-grow">
+      <p class="text-xs text-lime-400 font-bold tracking-widest uppercase">AUTOMATIC SIMULATION</p>
+      <p id="toast-message" class="text-xs text-slate-200 mt-1">メールを送信しました。</p>
+    </div>
+  </div>
+
+  <!-- ヘッダーナビゲーション -->
+  <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-forest-900/80 backdrop-blur-md border-b border-forest-800" id="main-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- ロゴエリア -->
+        <a href="#" class="flex items-center space-x-3 group">
+          <div class="bg-gradient-to-tr from-lime-500 to-forest-600 p-2.5 rounded-xl shadow-lg shadow-lime-500/10">
+            <!-- 葉っぱと歯車のスマート農業ロゴアイコン -->
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6a6 6 0 016 6c0 2.22-.89 4.24-2.34 5.73l-1.07-1.07A4.5 4.5 0 1012 16.5V18a6 6 0 01-6-6z" />
+            </svg>
+          </div>
+          <div>
+            <span class="text-xs tracking-widest text-lime-400 font-bold block">次世代型アグリスクール</span>
+            <span class="text-lg font-black text-white tracking-wider">アグリテック高等学院</span>
+          </div>
+        </a>
+
+        <!-- デスクトップメニュー -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="#features" class="text-sm font-medium text-slate-300 hover:text-white transition">学校の強み</a>
+          <a href="#curriculum" class="text-sm font-medium text-slate-300 hover:text-white transition">学科紹介</a>
+          <a href="#voices" class="text-sm font-medium text-slate-300 hover:text-white transition">在校生・卒業生</a>
+          <a href="#events" class="text-sm font-medium text-slate-300 hover:text-white transition">オープンキャンパス</a>
+          <a href="#faq" class="text-sm font-medium text-slate-300 hover:text-white transition">よくある質問</a>
+          <button onclick="openModal('OC申し込み')" class="bg-lime-500 hover:bg-lime-600 text-forest-900 text-xs font-bold tracking-wider uppercase px-5 py-3 rounded-full shadow-lg shadow-lime-500/20 transition-all duration-300 hover:scale-105">
+            体験入学に申し込む
+          </button>
+        </nav>
+
+        <!-- モバイルメニューボタン -->
+        <div class="md:hidden">
+          <button id="mobile-menu-btn" class="text-white focus:outline-none p-2 rounded-lg bg-forest-800" aria-label="メニューを開閉">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="hamburger-icon">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- モバイルドロップダウンメニュー -->
+    <div class="hidden md:hidden bg-forest-900 border-b border-forest-800 transition-all" id="mobile-menu">
+      <div class="px-4 pt-2 pb-6 space-y-3">
+        <a href="#features" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:bg-forest-800 hover:text-white transition">学校の強み</a>
+        <a href="#curriculum" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:bg-forest-800 hover:text-white transition">学科紹介</a>
+        <a href="#voices" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:bg-forest-800 hover:text-white transition">在校生・卒業生</a>
+        <a href="#events" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:bg-forest-800 hover:text-white transition">オープンキャンパス</a>
+        <a href="#faq" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:bg-forest-800 hover:text-white transition">よくある質問</a>
+        <div class="pt-4 border-t border-forest-800 flex flex-col gap-3">
+          <button onclick="openModal('OC申し込み')" class="w-full text-center bg-lime-500 text-forest-900 font-bold py-3 rounded-xl shadow-lg transition">
+            体験入学に申し込む
+          </button>
+          <button onclick="openModal('資料請求')" class="w-full text-center bg-transparent border border-white text-white font-bold py-3 rounded-xl hover:bg-white/10 transition">
+            資料請求をする
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. ヒーローセクション (Main Visual) -->
+  <section class="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-forest-900 via-forest-800 to-forest-700 pt-20 overflow-hidden">
+    <!-- 背景ビジュアル (アグリテック感のブレンド) -->
+    <div class="absolute inset-0 z-0">
+      <!-- 農業を象徴する雄大な緑のオーバーレイ付き背景画像 -->
+      <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&q=80&w=2000" alt="スマート農業ハウス" class="w-full h-full object-cover opacity-35 filter contrast-125 mix-blend-overlay">
+      <!-- 近未来的なデジタルグリッドパターン -->
+      <div class="absolute inset-0 hero-pattern opacity-60"></div>
+      <!-- グラデーションマスク -->
+      <div class="absolute inset-0 bg-gradient-to-t from-forest-700 via-transparent to-forest-900/90"></div>
+    </div>
+
+    <!-- コンテンツコンテナ -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white py-12 md:py-24">
+      <!-- 輝くバッジ -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-8 animate-pulse">
+        <span class="w-2 h-2 rounded-full bg-lime-400"></span>
+        <span class="text-xs sm:text-sm font-bold tracking-wider text-lime-400">2027年度 入学生募集中</span>
+      </div>
+
+      <!-- メインキャッチコピー -->
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-none mb-6">
+        <span class="block text-sm sm:text-lg md:text-xl tracking-[0.3em] text-lime-400 font-black mb-4">AGRICULTURE × TECHNOLOGY</span>
+        <span class="block bg-gradient-to-r from-white via-slate-100 to-lime-200 bg-clip-text text-transparent pb-2">
+          大地とテクノロジーで、
+        </span>
+        <span class="block text-lime-400 mt-2">未来を耕す。</span>
+      </h1>
+
+      <!-- サブコピー -->
+      <p class="max-w-2xl mx-auto text-sm sm:text-lg md:text-xl text-slate-200 font-light leading-relaxed mb-12 px-2">
+        AI・ドローンで進化するアグリテックから、食の安全を守るバイオ技術まで。<br class="hidden sm:inline">
+        「古臭い」を覆す、最先端の農業教育がここから始まります。
+      </p>
+
+      <!-- CTAボタン群 -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+        <button onclick="openModal('OC申し込み')" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-lime-400 to-lime-500 hover:from-lime-500 hover:to-lime-600 text-forest-900 font-extrabold rounded-full shadow-xl shadow-lime-500/20 transform hover:-translate-y-1 transition-all duration-300">
+          [無料] 体験入学に申し込む
+        </button>
+        <button onclick="openModal('資料請求')" class="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/15 backdrop-blur-md border border-white/30 text-white font-bold rounded-full transform hover:-translate-y-1 transition-all duration-300">
+          資料請求（無料）
+        </button>
+      </div>
+
+      <!-- 実績プチ表示 -->
+      <div class="mt-16 grid grid-cols-3 gap-4 max-w-xl mx-auto border-t border-white/10 pt-8 text-center">
+        <div>
+          <p class="text-2xl sm:text-3xl font-black text-lime-400">100%</p>
+          <p class="text-xs text-slate-300">進路決定率</p>
+        </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-black text-lime-400">15台以上</p>
+          <p class="text-xs text-slate-300">実習用ドローン</p>
+        </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-black text-lime-400">3つの専攻</p>
+          <p class="text-xs text-slate-300">アグリのプロを育成</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- スクロール促進アニメーション -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-center text-white/50 text-xs tracking-widest uppercase">
+      <span class="block mb-2">SCROLL DOWN</span>
+      <div class="w-6 h-10 border-2 border-white/30 rounded-full mx-auto p-1">
+        <div class="w-1.5 h-3 bg-lime-400 rounded-full mx-auto animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 学校の強み (Features) -->
+  <section id="features" class="py-24 bg-white relative overflow-hidden">
+    <!-- 装飾的な葉のバックグラウンドパターン -->
+    <div class="absolute -right-10 top-20 w-80 h-80 bg-forest-50 rounded-full filter blur-3xl opacity-70 -z-10"></div>
+    <div class="absolute -left-10 bottom-20 w-80 h-80 bg-lime-50/50 rounded-full filter blur-3xl opacity-70 -z-10"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-20 fade-in-on-scroll">
+        <span class="text-sm font-bold tracking-widest text-lime-600 uppercase">OUR STRENGTHS</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-forest-700 mt-2 mb-4">
+          農業高校のイメージを覆す「3つの強み」
+        </h2>
+        <p class="text-slate-600 leading-relaxed">
+          土を耕す喜び、最先端テクノロジーによる分析、性能を活かしたアプローチ、そして社会へ繋がるビジネススキル。
+          私たちが選ばれる理由がここにあります。
+        </p>
+      </div>
+
+      <!-- 強みカード3軸 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- 強み1 -->
+        <div class="bg-slate-50 border border-slate-100 p-8 rounded-3xl shadow-sm hover:shadow-xl hover:border-lime-200 transition-all duration-300 hover:-translate-y-1 fade-in-on-scroll">
+          <div class="w-14 h-14 bg-forest-100 rounded-2xl flex items-center justify-center text-forest-600 mb-6">
+            <!-- ドローン・システムアイコン -->
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-forest-700 mb-4">
+            「スマート農業」を学ぶ<br>最先端カリキュラム
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            GPS自動運転トラクター、センサー技術による水管理、ドローンによる上空からの育成解析など、IT×農業の最前線を現役エンジニアや専門家から直接学びます。
+          </p>
+        </div>
+
+        <!-- 強み2 -->
+        <div class="bg-slate-50 border border-slate-100 p-8 rounded-3xl shadow-sm hover:shadow-xl hover:border-lime-200 transition-all duration-300 hover:-translate-y-1 fade-in-on-scroll" style="transition-delay: 150ms;">
+          <div class="w-14 h-14 bg-forest-100 rounded-2xl flex items-center justify-center text-forest-600 mb-6">
+            <!-- 地球・サステナブルアイコン -->
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h2m-4-3h1.5a3 3 0 013 3v0" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-forest-700 mb-4">
+            地球と地域を豊かにする<br>「生きたライフサイエンス」
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            土壌微生物を活かした循環型有機栽培技術から、地球温暖化に対応する新品種の開発まで。持続可能な未来（SDGs）に直結する次世代アグリビジネスの種を育てます。
+          </p>
+        </div>
+
+        <!-- 強み3 -->
+        <div class="bg-slate-50 border border-slate-100 p-8 rounded-3xl shadow-sm hover:shadow-xl hover:border-lime-200 transition-all duration-300 hover:-translate-y-1 fade-in-on-scroll" style="transition-delay: 300ms;">
+          <div class="w-14 h-14 bg-forest-100 rounded-2xl flex items-center justify-center text-forest-600 mb-6">
+            <!-- 卒業・キャリア上昇アイコン -->
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-forest-700 mb-4">
+            広がる将来の進路<br>大学進学・トップ企業への信頼
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            国公立や有名私立大学の総合型選抜・農業特別推薦枠をはじめ、食品大手メーカー、アグリテックスタートアップ、農業専門公務員など、食と科学のプロとして幅広い道を拓けます。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 学科・コース紹介 (Curriculum / Departments) -->
+  <section id="curriculum" class="py-24 bg-forest-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-20 fade-in-on-scroll">
+        <span class="text-sm font-bold tracking-widest text-lime-600 uppercase">DEPARTMENTS</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-forest-700 mt-2 mb-4">
+          未来の食と農をデザインする「3つの専門学科」
+        </h2>
+        <p class="text-slate-600">
+          自分の「やってみたい！」に直結する3つのカリキュラム。<br class="hidden sm:inline">
+          本格的な実験室と最新スマート農場を組み合わせたハイブリッド環境で学びます。
+        </p>
+      </div>
+
+      <!-- 学科カードグリッド -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- 学科1: スマートアグリコース -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 flex flex-col justify-between group hover:shadow-2xl transition-all duration-300 fade-in-on-scroll">
+          <div class="relative overflow-hidden h-56 bg-slate-200">
+            <!-- コースを表現するイメージ -->
+            <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&q=80&w=800" alt="スマートアグリイメージ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 left-4 bg-forest-700 text-lime-400 text-xs font-bold tracking-widest px-3 py-1.5 rounded-full uppercase">
+              栽培×IT
+            </div>
+          </div>
+          <div class="p-8 flex-grow">
+            <h3 class="text-2xl font-black text-forest-700 mb-2">スマートアグリコース</h3>
+            <span class="text-lime-600 font-bold text-xs uppercase tracking-wider block mb-4">テクノロジーで生産を変革する</span>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+              センサーで徹底管理された次世代ビニールハウスで、トマトやイチゴの高度なスマート栽培を実践。データに基づき「どう作ればより効率的で美味しいか」を研究します。
+            </p>
+            <ul class="space-y-2 border-t border-slate-100 pt-4">
+              <li class="flex items-center text-xs text-slate-500">
+                <span class="w-1.5 h-1.5 bg-lime-500 rounded-full mr-2"></span>
+                環境センサーネットワーク構築
+              </li>
+              <li class="flex items-center text-xs text-slate-500">
+                <span class="w-1.5 h-1.5 bg-lime-500 rounded-full mr-2"></span>
+                自律運転トラクターのシステム実習
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 学科2: 食品フードサイエンスコース -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 flex flex-col justify-between group hover:shadow-2xl transition-all duration-300 fade-in-on-scroll" style="transition-delay: 150ms;">
+          <div class="relative overflow-hidden h-56 bg-slate-200">
+            <!-- コースを表現するイメージ -->
+            <img src="https://images.unsplash.com/photo-1551244072-5d12893278ab?auto=format&fit=crop&q=80&w=800" alt="食品バイオイメージ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 left-4 bg-forest-700 text-lime-400 text-xs font-bold tracking-widest px-3 py-1.5 rounded-full uppercase">
+              サイエンス×食
+            </div>
+          </div>
+          <div class="p-8 flex-grow">
+            <h3 class="text-2xl font-black text-forest-700 mb-2">食品フードサイエンスコース</h3>
+            <span class="text-lime-600 font-bold text-xs uppercase tracking-wider block mb-4">「食の安全」と「美味しさ」をデザインする</span>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+              微生物による発酵技術や食品バイオテクノロジー、画期的な新メニュー開発までを体系的に学習。HACCP等、国際基準の品質管理資格取得にも力を入れています。
+            </p>
+            <ul class="space-y-2 border-t border-slate-100 pt-4">
+              <li class="flex items-center text-xs text-slate-500">
+                <span class="w-1.5 h-1.5 bg-lime-500 rounded-full mr-2"></span>
+                発酵科学実習（ヨーグルト、味噌等の試作）
+              </li>
+              <li class="flex items-center text-xs text-slate-500">
+                <span class="w-1.5 h-1.5 bg-lime-500 rounded-full mr-2"></span>
+                食の安全性確保のための微生物検査
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 学科3: アグリビジネスコース -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 flex flex-col justify-between group hover:shadow-2xl transition-all duration-300 fade-in-on-scroll" style="transition-delay: 300ms;">
+          <div class="relative overflow-hidden h-56 bg-slate-200">
+            <!-- コースを表現するイメージ -->
+            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=800" alt="アグリビジネスイメージ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 left-4 bg-forest-700 text-lime-400 text-xs font-bold tracking-widest px-3 py-1.5 rounded-full uppercase">
+              マーケティング×経営
+            </div>
+          </div>
+          <div class="p-8 flex-grow">
+            <h3 class="text-2xl font-black text-forest-700 mb-2">アグリビジネスコース</h3>
+            <span class="text-lime-600 font-bold text-xs uppercase tracking-wider block mb-4">農業を「稼げるビジネス」へと昇華させる</span>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+              マーケティングやブランド企画、自社農産物を売るECサイト運営を学ぶ現代的なコース。地域や地元企業と連携して商品開発を進めるリーダーを育成します。
+            </p>
+            <ul class="space-y-2 border-t border-slate-100 pt-4">
+              <li class="flex items-center text-xs text-slate-500">
+                <span class="w-1.5 h-1.5 bg-lime-500 rounded-full mr-2"></span>
+                アグリ・イノベーションマーケティング実践
+              </li>
+              <li class="flex items-center text-xs text-slate-500">
+                <span class="w-1.5 h-1.5 bg-lime-500 rounded-full mr-2"></span>
+                地域課題を解決する農商工連携プロジェクト
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 生徒・卒業生の声 (Voices) -->
+  <section id="voices" class="py-24 bg-white relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-20 fade-in-on-scroll">
+        <span class="text-sm font-bold tracking-widest text-lime-600 uppercase">STUDENTS & ALUMNI</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-forest-700 mt-2 mb-4">
+          アグリスクールで輝く先輩たち
+        </h2>
+        <p class="text-slate-600">
+          「最先端の農業ってどんな感じ？」実際に本校で学びを深めている在校生と、<br class="hidden sm:inline">
+          その学びを原動力にして社会で活躍する卒業生のメッセージをお届けします。
+        </p>
+      </div>
+
+      <!-- ボイスレイアウト -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <!-- ボイス1 -->
+        <div class="bg-forest-50 p-8 rounded-3xl border border-forest-100 flex flex-col md:flex-row gap-6 relative fade-in-on-scroll">
+          <!-- 引用符装飾 -->
+          <span class="absolute right-8 top-4 text-forest-100 font-serif text-8xl leading-none select-none">“</span>
+          <div class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 mx-auto md:mx-0 border-2 border-white shadow-md">
+            <!-- 擬似顔写真イメージ -->
+            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=300" alt="佐藤 陽太さん" class="w-full h-full object-cover">
+          </div>
+          <div class="flex-grow text-center md:text-left">
+            <p class="text-sm font-bold text-lime-600">スマートアグリコース 2年生</p>
+            <h3 class="text-xl font-bold text-forest-700 mb-3">佐藤 陽太 さん</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              「最初は農業って手作業で大変そう、というイメージがありましたが、授業でドローンを操縦したり、自動水管理システムを作ったりして、イメージが180度変わりました！最新のシステムを動かすのが本当に楽しく、将来は最先端技術を活用した『スマート実家農家』として活躍するのが夢です。」
+            </p>
+          </div>
+        </div>
+
+        <!-- ボイス2 -->
+        <div class="bg-forest-50 p-8 rounded-3xl border border-forest-100 flex flex-col md:flex-row gap-6 relative fade-in-on-scroll" style="transition-delay: 200ms;">
+          <!-- 引用符装飾 -->
+          <span class="absolute right-8 top-4 text-forest-100 font-serif text-8xl leading-none select-none">“</span>
+          <div class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 mx-auto md:mx-0 border-2 border-white shadow-md">
+            <!-- 擬似顔写真イメージ -->
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300" alt="鈴木 美咲さん" class="w-full h-full object-cover">
+          </div>
+          <div class="flex-grow text-center md:text-left">
+            <p class="text-sm font-bold text-lime-600">食品科学コース卒業 / 大手食品メーカー勤務</p>
+            <h3 class="text-xl font-bold text-forest-700 mb-3">鈴木 美咲 さん</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              「高校での食品科学研究やバイオテクノロジーの実験が、今の会社での商品開発業務にすごく活きています。大学と同等レベルの高度な分析装置が高校に揃っていたので、進路の際にも推薦アピールとして大きな強みになりました。早くから専門的に学べるのは、何よりの近道です！」
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. イベント情報 (Information) -->
+  <section id="events" class="py-24 bg-forest-900 text-white relative overflow-hidden">
+    <!-- デジタルな背景効果 -->
+    <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_bottom_left,rgba(132,204,22,0.1),transparent)]"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-16 fade-in-on-scroll">
+        <span class="text-sm font-bold tracking-widest text-lime-400 uppercase">OPEN CAMPUS 2026</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 mb-4">
+          見て、触れて、感動する体験入学！
+        </h2>
+        <p class="text-slate-300">
+          実際に動き回るドローンや、美味しい収穫体験など、農業高校の「本気」を体感できます。<br class="hidden sm:inline">
+          すべての体験会は参加無料。保護者様とのご参加も大歓迎です。
+        </p>
+      </div>
+
+      <!-- スケジュールグリッド -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <!-- 第1回 -->
+        <div class="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md flex flex-col justify-between hover:bg-white/10 hover:border-lime-500/50 transition-all duration-300 fade-in-on-scroll">
+          <div>
+            <div class="flex justify-between items-start mb-6">
+              <div class="inline-block bg-lime-500 text-forest-900 font-extrabold text-xs px-3 py-1 rounded-full">
+                第1回
+              </div>
+              <!-- 残枠バッジ -->
+              <span id="slot-count-oc1" class="text-xs bg-rose-500/80 border border-rose-400/50 text-white font-bold px-2.5 py-1 rounded-md">
+                残り 3 枠
+              </span>
+            </div>
+            <p class="text-2xl font-black text-lime-400 mb-2">7月18日<span class="text-base font-bold text-white ml-1">(土) 10:00〜</span></p>
+            <h3 class="text-lg font-bold text-white mb-4">
+              ドローン操縦 ＆ スマートトラクター体験会
+            </h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              実際にスマートドローンを浮かせ、空からのデータ解析画面を体験！自動操縦するトラクターの運転席にも試乗できます。
+            </p>
+          </div>
+          <button onclick="openModal('OC申し込み 7/18')" id="btn-oc1" class="w-full py-3 bg-white/10 hover:bg-lime-500 hover:text-forest-900 text-sm font-bold rounded-xl transition-all duration-300">
+            この日に申し込む
+          </button>
+        </div>
+
+        <!-- 第2回 -->
+        <div class="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md flex flex-col justify-between hover:bg-white/10 hover:border-lime-500/50 transition-all duration-300 fade-in-on-scroll" style="transition-delay: 150ms;">
+          <div>
+            <div class="flex justify-between items-start mb-6">
+              <div class="inline-block bg-lime-500 text-forest-900 font-extrabold text-xs px-3 py-1 rounded-full">
+                第2回
+              </div>
+              <!-- 残枠バッジ -->
+              <span id="slot-count-oc2" class="text-xs bg-yellow-500/80 border border-yellow-400/50 text-forest-950 font-bold px-2.5 py-1 rounded-md">
+                残り 5 枠
+              </span>
+            </div>
+            <p class="text-2xl font-black text-lime-400 mb-2">8月22日<span class="text-base font-bold text-white ml-1">(土) 10:00〜</span></p>
+            <h3 class="text-lg font-bold text-white mb-4">
+              極上トマト・イチゴ収穫 ＆ 特製ジャム開発体験
+            </h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              最新式スマート温室で栽培された完熟果実を収穫！バイオ技術を用いた無添加ジャムづくりを研究所スタッフと実習します。
+            </p>
+          </div>
+          <button onclick="openModal('OC申し込み 8/22')" id="btn-oc2" class="w-full py-3 bg-white/10 hover:bg-lime-500 hover:text-forest-900 text-sm font-bold rounded-xl transition-all duration-300">
+            この日に申し込む
+          </button>
+        </div>
+
+        <!-- 第3回 -->
+        <div class="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md flex flex-col justify-between hover:bg-white/10 hover:border-lime-500/50 transition-all duration-300 fade-in-on-scroll" style="transition-delay: 300ms;">
+          <div>
+            <div class="flex justify-between items-start mb-6">
+              <div class="inline-block bg-lime-500 text-forest-900 font-extrabold text-xs px-3 py-1 rounded-full">
+                第3回
+              </div>
+              <!-- 残枠バッジ -->
+              <span id="slot-count-oc3" class="text-xs bg-emerald-500/30 border border-emerald-400/50 text-emerald-400 font-bold px-2.5 py-1 rounded-md">
+                残り 8 枠
+              </span>
+            </div>
+            <p class="text-2xl font-black text-lime-400 mb-2">9月12日<span class="text-base font-bold text-white ml-1">(土) 10:00〜</span></p>
+            <h3 class="text-lg font-bold text-white mb-4">
+              未来の農業ビジネス体験ゲーム ＆ 進路相談会
+            </h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              地域特産品をプロデュースして販売するシミュレーションゲームに挑戦！先輩や教員との安心個別キャリア相談室も。
+            </p>
+          </div>
+          <button onclick="openModal('OC申し込み 9/12')" id="btn-oc3" class="w-full py-3 bg-white/10 hover:bg-lime-500 hover:text-forest-900 text-sm font-bold rounded-xl transition-all duration-300">
+            この日に申し込む
+          </button>
+        </div>
+      </div>
+
+      <!-- 参加特典情報 -->
+      <div class="bg-gradient-to-r from-forest-800 to-forest-700 rounded-3xl p-8 border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-8 fade-in-on-scroll">
+        <div class="flex items-start gap-4">
+          <div class="bg-lime-500/20 text-lime-400 p-3.5 rounded-2xl shrink-0">
+            <!-- 特典・プレゼントアイコン -->
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 0h4m-4 0H8m12 3a2 2 0 100-4H4a2 2 0 100 4m16 0v10a2 2 0 01-2 2H6a2 2 0 01-2-2V9m16 0H4" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-xl font-extrabold text-lime-400 mb-2">嬉しいOC参加2大特典！</h4>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              ① 校内スマート農場で収穫された「極上フルーツトマト」または「本校特製手作りイチゴジャム」をお土産として全員にプレゼント！<br>
+              ② 同時開催：保護者様向け「大学進学推薦枠とスマートアグリキャリアのリアル」特別セミナーを同時開催。
+            </p>
+          </div>
+        </div>
+        <button onclick="openModal('OC申し込み')" class="shrink-0 px-8 py-4 bg-lime-500 hover:bg-lime-600 text-forest-900 font-extrabold rounded-full transition shadow-lg shadow-lime-500/10">
+          体験入学に応募する
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5.5 新設: よくある質問セクション (FAQ) -->
+  <section id="faq" class="py-24 bg-white relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- セクションタイトル -->
+      <div class="text-center max-w-3xl mx-auto mb-16 fade-in-on-scroll">
+        <span class="text-sm font-bold tracking-widest text-lime-600 uppercase">FAQ</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-forest-700 mt-2 mb-4">
+          よくある質問と回答
+        </h2>
+        <p class="text-slate-600">
+          入学前に抱きやすい疑問や、保護者の方から多く寄せられる質問をまとめました。
+        </p>
+      </div>
+
+      <!-- FAQアコーディオン一覧 -->
+      <div class="space-y-4">
+        <!-- Q1 -->
+        <div class="border border-slate-100 bg-slate-50 rounded-2xl overflow-hidden fade-in-on-scroll">
+          <button onclick="toggleFaq(1)" class="w-full text-left p-6 flex justify-between items-center focus:outline-none hover:bg-slate-100/50 transition duration-200">
+            <span class="font-bold text-forest-700 pr-4">Q. 農業の経験が全くありませんが、授業についていけますか？</span>
+            <span id="faq-icon-1" class="text-forest-600 transition-transform duration-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </span>
+          </button>
+          <div id="faq-ans-1" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="p-6 pt-0 border-t border-slate-200/50 text-sm text-slate-600 leading-relaxed bg-white">
+              A. はい、全く問題ありません！入学生の9割以上が一般の非農家家庭の出身です。土の触り方、道具の使い方から、スマート農機具のプログラム操作まで、基礎からステップアップ形式で丁寧に指導します。安心してご入学ください。
+            </div>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="border border-slate-100 bg-slate-50 rounded-2xl overflow-hidden fade-in-on-scroll" style="transition-delay: 100ms;">
+          <button onclick="toggleFaq(2)" class="w-full text-left p-6 flex justify-between items-center focus:outline-none hover:bg-slate-100/50 transition duration-200">
+            <span class="font-bold text-forest-700 pr-4">Q. 卒業後は、実家の農業を継ぐか、農家になるしかないのでしょうか？</span>
+            <span id="faq-icon-2" class="text-forest-600 transition-transform duration-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </span>
+          </button>
+          <div id="faq-ans-2" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="p-6 pt-0 border-t border-slate-200/50 text-sm text-slate-600 leading-relaxed bg-white">
+              A. いいえ、決してそんなことはありません。もちろん農業を継ぐ・起業する生徒もいますが、多くの生徒は「食品メーカーの開発職」「アグリテック（IT系）スタートアップ」「農業職の地方公務員」「農業工学系・生命科学系の4年制大学への進学」など、多彩な進路を選択しています。最先端のアグリビジネススキルは多業界から非常に高く評価されています。
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="border border-slate-100 bg-slate-50 rounded-2xl overflow-hidden fade-in-on-scroll" style="transition-delay: 200ms;">
+          <button onclick="toggleFaq(3)" class="w-full text-left p-6 flex justify-between items-center focus:outline-none hover:bg-slate-100/50 transition duration-200">
+            <span class="font-bold text-forest-700 pr-4">Q. 遠方からの入学を検討していますが、寮などはありますか？</span>
+            <span id="faq-icon-3" class="text-forest-600 transition-transform duration-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </span>
+          </button>
+          <div id="faq-ans-3" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="p-6 pt-0 border-t border-slate-200/50 text-sm text-slate-600 leading-relaxed bg-white">
+              A. 本校には最新の冷暖房・Wi-Fi環境が完備された個室タイプの学生寮「アグリ・フロンティア寮」がございます。栄養管理士の監修する1日3食が付き、全国各地から集まる同じ夢を持った仲間と安心して共同生活を送ることができます。体験入学時にも寮の見学が可能です。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. フッター / 最終CTA (Call to Action & Footer) -->
+  <section class="py-24 bg-slate-50 relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <!-- 最終CTAカード -->
+      <div class="bg-gradient-to-tr from-forest-800 to-forest-600 text-white rounded-3xl p-8 md:p-16 shadow-2xl shadow-forest-800/20 border border-forest-600 relative overflow-hidden fade-in-on-scroll">
+        <!-- バックグラウンド装飾 -->
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-lime-400/10 rounded-full filter blur-3xl"></div>
+        
+        <h2 class="text-3xl sm:text-4xl font-black mb-4">
+          あなたの手で、<br class="sm:hidden">未来の食と農をデザインしよう。
+        </h2>
+        <p class="text-slate-200 text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-10">
+          一度現地を訪ねて、最先端の施設や輝く先輩たちの姿を自分の目で確かめてみてください。新しい学びが待っています。
+        </p>
+
+        <!-- ボタンコンテナ -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+          <button onclick="openModal('最終OC申し込み')" class="px-8 py-4 bg-gradient-to-r from-lime-400 to-lime-500 hover:from-lime-500 hover:to-lime-600 text-forest-900 font-extrabold rounded-full shadow-lg hover:scale-105 transition-all duration-300">
+            [WEBで簡単1分] 体験入学へ
+          </button>
+          <button onclick="openModal('資料請求')" class="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 font-bold rounded-full hover:scale-105 transition-all duration-300">
+            資料・パンフレットを請求
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <footer class="bg-forest-950 text-slate-400 py-16 border-t border-forest-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <!-- スクール情報 -->
+        <div class="md:col-span-2 space-y-4">
+          <div class="flex items-center space-x-3">
+            <div class="bg-lime-500 p-2 rounded-lg text-forest-950">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+              </svg>
+            </div>
+            <span class="text-lg font-black text-white tracking-widest">アグリテック高等学院</span>
+          </div>
+          <p class="text-xs text-slate-400">
+            〒000-0000 〇〇県〇〇市アグリテクノロジーヒルズ1-1<br>
+            TEL: 012-345-6789 (平日 9:00〜17:00)<br>
+            Email: info@agritech-highschool.edu
+          </p>
+        </div>
+
+        <!-- リンク群 1 -->
+        <div>
+          <h4 class="text-white text-xs font-bold tracking-widest uppercase mb-4">コンテンツ</h4>
+          <ul class="space-y-2.5 text-xs">
+            <li><a href="#features" class="hover:text-lime-400 transition">学校の強み</a></li>
+            <li><a href="#curriculum" class="hover:text-lime-400 transition">専門コース一覧</a></li>
+            <li><a href="#voices" class="hover:text-lime-400 transition">先輩・在校生の体験談</a></li>
+            <li><a href="#events" class="hover:text-lime-400 transition">体験会日程・特典</a></li>
+          </ul>
+        </div>
+
+        <!-- リンク群 2 (SNSなど) -->
+        <div>
+          <h4 class="text-white text-xs font-bold tracking-widest uppercase mb-4">公式アカウント</h4>
+          <ul class="space-y-2.5 text-xs">
+            <li><a href="#" class="hover:text-lime-400 transition flex items-center gap-1">Instagram <span class="text-[9px] text-lime-400 bg-lime-400/10 px-1 rounded">農場実況中</span></a></li>
+            <li><a href="#" class="hover:text-lime-400 transition flex items-center gap-1">YouTube <span class="text-[9px] text-slate-500 bg-white/5 px-1 rounded">紹介動画</span></a></li>
+            <li><a href="#" class="hover:text-lime-400 transition">Twitter (X)</a></li>
+            <li><a href="#" class="hover:text-lime-400 transition">個人情報の取り扱い</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ボトムエリア (クレジット & GitHubリンク) -->
+      <div class="border-t border-forest-900 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <p>&copy; 2026 Agritech High School. All rights reserved.</p>
+        <div class="flex items-center space-x-4">
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition flex items-center gap-1.5 bg-forest-900 border border-forest-800 px-3 py-1.5 rounded-lg">
+            <!-- GitHubアイコン -->
+            <svg class="w-4 h-4 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.577.688.479C19.138 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+            </svg>
+            <span>GitHub Repository</span>
+          </a>
+          <span class="text-slate-500">Designed &amp; Coded by <span class="text-lime-400 font-bold">Your Portfolio</span></span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- カスタムモーダル (体験お申し込み・資料請求兼用) -->
+  <div id="action-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-forest-950/80 backdrop-blur-sm hidden" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 transform scale-95 transition-all duration-300" id="modal-container">
+      <!-- モーダルヘッダー -->
+      <div class="bg-gradient-to-r from-forest-800 to-forest-700 p-6 text-white flex justify-between items-center">
+        <div>
+          <h3 id="modal-title" class="text-xl font-bold text-lime-400">体験入学に申し込む</h3>
+          <p class="text-slate-300 text-xs mt-1">フォームから必要事項を送信してください。</p>
+        </div>
+        <button onclick="closeModal()" class="text-slate-300 hover:text-white p-2 hover:bg-white/10 rounded-full transition" aria-label="モーダルを閉じる">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- モーダルボディ(入力フォーム) -->
+      <form id="action-form" onsubmit="handleFormSubmit(event)" class="p-8 space-y-4">
+        <!-- 案内元の区別を保持 -->
+        <input type="hidden" id="modal-action-type" value="">
+
+        <!-- お名前 -->
+        <div>
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5" for="form-name">お名前 <span class="text-rose-500">*</span></label>
+          <input type="text" id="form-name" required placeholder="山田 太郎" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-lime-500/50 focus:border-lime-500 text-sm">
+        </div>
+
+        <!-- メールアドレス -->
+        <div>
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5" for="form-email">メールアドレス <span class="text-rose-500">*</span></label>
+          <input type="email" id="form-email" required placeholder="example@agritech.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-lime-500/50 focus:border-lime-500 text-sm">
+        </div>
+
+        <!-- 参加区分 -->
+        <div>
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5" for="form-identity">区分 <span class="text-rose-500">*</span></label>
+          <select id="form-identity" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-lime-500/50 focus:border-lime-500 text-sm">
+            <option value="中学生">中学生 (本人)</option>
+            <option value="保護者">保護者</option>
+            <option value="中学校教諭">中学校教諭</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+
+        <!-- 日程（お申し込み時のみ表示、資料請求の際は非表示に動的変更） -->
+        <div id="modal-date-picker">
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5" for="form-date">希望日を選択 <span class="text-rose-500">*</span></label>
+          <select id="form-date" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-lime-500/50 focus:border-lime-500 text-sm">
+            <option value="第1回: 7月18日(土)">第1回: 7月18日(土) 【ドローン＆トラクター】</option>
+            <option value="第2回: 8月22日(土)">第2回: 8月22日(土) 【収穫＆ジャム開発】</option>
+            <option value="第3回: 9月12日(土)">第3回: 9月12日(土) 【農業ビジネスゲーム】</option>
+            <option value="個別見学希望">個別相談・見学を希望（別途調整）</option>
+          </select>
+        </div>
+
+        <!-- 備考 -->
+        <div>
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5" for="form-message">ご要望・ご質問</label>
+          <textarea id="form-message" rows="3" placeholder="アレルギーや配慮が必要な事項、事前のご質問があれば入力してください。" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-lime-500/50 focus:border-lime-500 text-sm"></textarea>
+        </div>
+
+        <!-- プライバシーポリシー同意 -->
+        <div class="flex items-start gap-2.5 pt-2">
+          <input type="checkbox" id="form-privacy" required class="mt-1 rounded text-lime-500 focus:ring-lime-500">
+          <label for="form-privacy" class="text-xs text-slate-500 leading-relaxed">
+            個人情報の取扱方針（プライバシーポリシー）に同意し、体験入学のご案内以外の目的には使用しないことに同意します。
+          </label>
+        </div>
+
+        <!-- 送信ボタン -->
+        <button type="submit" class="w-full py-4 mt-4 bg-gradient-to-r from-forest-700 to-forest-800 hover:from-forest-800 hover:to-forest-900 text-white font-bold rounded-xl shadow-lg transition duration-200">
+          この内容で送信する
+        </button>
+      </form>
+
+      <!-- 完了・成功画面（フォーム送信後の表示） -->
+      <div id="modal-success" class="p-8 text-center space-y-4 hidden">
+        <div class="w-16 h-16 bg-lime-100 text-lime-600 rounded-full flex items-center justify-center mx-auto">
+          <!-- チェックアイコン -->
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h4 class="text-2xl font-bold text-forest-700">お申し込みが完了しました！</h4>
+        <p class="text-slate-600 text-sm leading-relaxed max-w-sm mx-auto">
+          ご入力いただいたメールアドレス宛に、24時間以内に確認と詳細のご案内メールをお送りいたします。
+        </p>
+        <button onclick="closeModal()" class="px-8 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ポートフォリオ評価者用: 管理者デモダッシュボードウィジェット -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <button onclick="toggleDashboard()" class="flex items-center gap-2 bg-gradient-to-r from-forest-800 to-forest-700 hover:from-forest-700 hover:to-forest-600 border border-lime-500/30 text-white font-extrabold text-xs tracking-wider px-4 py-3 rounded-full shadow-2xl hover:scale-105 transition active:scale-95">
+      <span class="w-2.5 h-2.5 rounded-full bg-lime-400 animate-ping"></span>
+      <span>管理者用ダッシュボードを開く</span>
+    </button>
+  </div>
+
+  <!-- ダッシュボードモーダル -->
+  <div id="dashboard-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-forest-950/90 backdrop-blur-sm hidden" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-100 transform scale-95 transition-all duration-300" id="dashboard-container">
+      <!-- ヘッダー -->
+      <div class="bg-gradient-to-r from-forest-900 to-forest-800 p-6 text-white flex justify-between items-center">
+        <div>
+          <h3 class="text-xl font-bold text-lime-400 flex items-center gap-2">
+            <span>💻</span> 管理者お申し込みデータ管理 (Demo Mode)
+          </h3>
+          <p class="text-slate-300 text-xs mt-1">ローカルストレージ（localStorage）に保存されているデータを表示しています。</p>
+        </div>
+        <button onclick="toggleDashboard()" class="text-slate-300 hover:text-white p-2 hover:bg-white/10 rounded-full transition" aria-label="閉じる">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- テーブルボディ -->
+      <div class="p-6 overflow-y-auto max-h-[400px]">
+        <div class="flex justify-between items-center mb-4">
+          <span id="dashboard-count" class="text-sm text-slate-500 font-bold">データ件数: 0件</span>
+          <button onclick="clearAllSubmissions()" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-lg transition">
+            全データを消去
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-50 text-slate-500 font-bold">
+                <th class="py-3 px-2">日時</th>
+                <th class="py-3 px-2">種別</th>
+                <th class="py-3 px-2">お名前</th>
+                <th class="py-3 px-2">区分</th>
+                <th class="py-3 px-2">希望日程 / 備考</th>
+                <th class="py-3 px-2 text-center">操作</th>
+              </tr>
+            </thead>
+            <tbody id="dashboard-tbody">
+              <!-- JSで動的に構築 -->
+              <tr>
+                <td colspan="6" class="py-8 text-center text-slate-400">お申し込みデータはまだありません。フォームを送信してみてください。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- フッター -->
+      <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex justify-end">
+        <button onclick="toggleDashboard()" class="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // --- (1) モバイルメニューのトグル機能 ---
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      if (mobileMenu.classList.contains('hidden')) {
+        hamburgerIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />`;
+      } else {
+        hamburgerIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />`;
+      }
+    });
+
+    // メニュー選択時に閉じる
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        hamburgerIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />`;
+      });
+    });
+
+    // --- (2) スクロール時にヘッダー背景を変化 ---
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('bg-forest-950/95', 'shadow-lg');
+        header.classList.remove('bg-forest-900/80');
+      } else {
+        header.classList.add('bg-forest-900/80');
+        header.classList.remove('bg-forest-950/95', 'shadow-lg');
+      }
+    });
+
+    // --- (3) スクロールフェードイン効果 (Intersection Observer) ---
+    const fadeElements = document.querySelectorAll('.fade-in-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('appear');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15
+    });
+
+    fadeElements.forEach(el => observer.observe(el));
+
+    // --- (4) 新設: よくある質問 (FAQ) アコーディオン制御 ---
+    function toggleFaq(id) {
+      const ans = document.getElementById(`faq-ans-${id}`);
+      const icon = document.getElementById(`faq-icon-${id}`);
+      
+      if (ans.style.maxHeight && ans.style.maxHeight !== '0px') {
+        ans.style.maxHeight = '0px';
+        icon.classList.remove('rotate-180');
+      } else {
+        // 全開にするためのサイズ計算
+        ans.style.maxHeight = ans.scrollHeight + 'px';
+        icon.classList.add('rotate-180');
+      }
+    }
+
+    // --- (5) 新設: リアルタイム残枠カウントデータ初期化 ---
+    // ローカルストレージに残枠データを保存
+    const defaultSlots = { oc1: 3, oc2: 5, oc3: 8 };
+    if (!localStorage.getItem('oc_slots')) {
+      localStorage.setItem('oc_slots', JSON.stringify(defaultSlots));
+    }
+
+    function updateSlotDisplay() {
+      const slots = JSON.parse(localStorage.getItem('oc_slots'));
+      
+      const el1 = document.getElementById('slot-count-oc1');
+      const el2 = document.getElementById('slot-count-oc2');
+      const el3 = document.getElementById('slot-count-oc3');
+      const btn1 = document.getElementById('btn-oc1');
+      const btn2 = document.getElementById('btn-oc2');
+      const btn3 = document.getElementById('btn-oc3');
+
+      // 第1回枠の表示
+      if (slots.oc1 <= 0) {
+        el1.innerText = '満員御礼';
+        el1.className = "text-xs bg-slate-500 text-white font-bold px-2.5 py-1 rounded-md";
+        btn1.innerText = "満員（キャンセル待ち）";
+        btn1.disabled = true;
+        btn1.className = "w-full py-3 bg-slate-800 text-slate-500 text-sm font-bold rounded-xl cursor-not-allowed";
+      } else {
+        el1.innerText = `残り ${slots.oc1} 枠`;
+        el1.className = "text-xs bg-rose-500/80 border border-rose-400/50 text-white font-bold px-2.5 py-1 rounded-md animate-pulse";
+      }
+
+      // 第2回枠の表示
+      if (slots.oc2 <= 0) {
+        el2.innerText = '満員御礼';
+        el2.className = "text-xs bg-slate-500 text-white font-bold px-2.5 py-1 rounded-md";
+        btn2.innerText = "満員（キャンセル待ち）";
+        btn2.disabled = true;
+        btn2.className = "w-full py-3 bg-slate-800 text-slate-500 text-sm font-bold rounded-xl cursor-not-allowed";
+      } else {
+        el2.innerText = `残り ${slots.oc2} 枠`;
+      }
+
+      // 第3回枠の表示
+      if (slots.oc3 <= 0) {
+        el3.innerText = '満員御礼';
+        el3.className = "text-xs bg-slate-500 text-white font-bold px-2.5 py-1 rounded-md";
+        btn3.innerText = "満員（キャンセル待ち）";
+        btn3.disabled = true;
+        btn3.className = "w-full py-3 bg-slate-800 text-slate-500 text-sm font-bold rounded-xl cursor-not-allowed";
+      } else {
+        el3.innerText = `残り ${slots.oc3} 枠`;
+      }
+    }
+
+    // --- (6) カスタムモーダル（申し込み・資料請求）の動作制御 ---
+    const modal = document.getElementById('action-modal');
+    const modalContainer = document.getElementById('modal-container');
+    const modalTitle = document.getElementById('modal-title');
+    const modalActionType = document.getElementById('modal-action-type');
+    const modalDatePicker = document.getElementById('modal-date-picker');
+    const actionForm = document.getElementById('action-form');
+    const modalSuccess = document.getElementById('modal-success');
+
+    function openModal(action) {
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modalContainer.classList.remove('scale-95');
+        modalContainer.classList.add('scale-100');
+      }, 50);
+
+      actionForm.classList.remove('hidden');
+      modalSuccess.classList.add('hidden');
+      actionForm.reset();
+
+      modalActionType.value = action;
+      if (action.includes('資料請求')) {
+        modalTitle.innerText = 'パンフレット・資料請求';
+        modalDatePicker.style.display = 'none';
+        document.getElementById('form-date').required = false;
+      } else {
+        modalTitle.innerText = '体験入学・オープンキャンパス申込';
+        modalDatePicker.style.display = 'block';
+        document.getElementById('form-date').required = true;
+
+        if (action.includes('7/18')) {
+          document.getElementById('form-date').value = '第1回: 7月18日(土)';
+        } else if (action.includes('8/22')) {
+          document.getElementById('form-date').value = '第2回: 8月22日(土)';
+        } else if (action.includes('9/12')) {
+          document.getElementById('form-date').value = '第3回: 9月12日(土)';
+        }
+      }
+    }
+
+    function closeModal() {
+      modalContainer.classList.remove('scale-100');
+      modalContainer.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
+    }
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // --- (7) お申し込み・データ保存・残枠減少の実装 ---
+    function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const type = modalActionType.value.includes('資料請求') ? '資料請求' : '体験入学申込';
+      const name = document.getElementById('form-name').value;
+      const email = document.getElementById('form-email').value;
+      const identity = document.getElementById('form-identity').value;
+      const date = document.getElementById('form-date').value;
+      const message = document.getElementById('form-message').value;
+
+      // 日時情報
+      const dateString = new Date().toLocaleString('ja-JP');
+
+      const submission = {
+        timestamp: dateString,
+        type: type,
+        name: name,
+        email: email,
+        identity: identity,
+        date: type === '資料請求' ? 'N/A (資料発送)' : date,
+        message: message || '(特になし)'
+      };
+
+      // 既存データを取得して追記
+      const submissions = JSON.parse(localStorage.getItem('oc_submissions')) || [];
+      submissions.unshift(submission); // 最新のものが上
+      localStorage.setItem('oc_submissions', JSON.stringify(submissions));
+
+      // 体験入学申込だった場合、該当日の残枠をマイナスする
+      if (type === '体験入学申込') {
+        const slots = JSON.parse(localStorage.getItem('oc_slots'));
+        if (date.includes('7/18') && slots.oc1 > 0) {
+          slots.oc1 -= 1;
+        } else if (date.includes('8/22') && slots.oc2 > 0) {
+          slots.oc2 -= 1;
+        } else if (date.includes('9/12') && slots.oc3 > 0) {
+          slots.oc3 -= 1;
+        }
+        localStorage.setItem('oc_slots', JSON.stringify(slots));
+        updateSlotDisplay(); // 残枠表示のリアルタイム更新
+      }
+
+      // ダッシュボードに即時反映
+      renderDashboard();
+
+      // トースト通知を表示
+      showToast(`${name} 様 宛に【${type}完了】自動返信確認メールを送信しました！`);
+
+      // 完了画面へ切り替え
+      actionForm.classList.add('hidden');
+      modalSuccess.classList.remove('hidden');
+    }
+
+    // --- (8) トースト通知のポップアップ制御 ---
+    function showToast(message) {
+      const toast = document.getElementById('toast-notification');
+      const toastMsg = document.getElementById('toast-message');
+      toastMsg.innerText = message;
+      
+      // トースト出現
+      toast.classList.remove('translate-x-96');
+      toast.classList.add('translate-x-0');
+
+      // 5秒後に消える
+      setTimeout(() => {
+        toast.classList.remove('translate-x-0');
+        toast.classList.add('translate-x-96');
+      }, 5000);
+    }
+
+    // --- (9) デモ管理者ダッシュボードの制御 ---
+    const dbModal = document.getElementById('dashboard-modal');
+    const dbContainer = document.getElementById('dashboard-container');
+
+    function toggleDashboard() {
+      dbModal.classList.toggle('hidden');
+      if (!dbModal.classList.contains('hidden')) {
+        setTimeout(() => {
+          dbContainer.classList.remove('scale-95');
+          dbContainer.classList.add('scale-100');
+        }, 50);
+        renderDashboard();
+      } else {
+        dbContainer.classList.remove('scale-100');
+        dbContainer.classList.add('scale-95');
+      }
+    }
+
+    // データのレンダリング
+    function renderDashboard() {
+      const submissions = JSON.parse(localStorage.getItem('oc_submissions')) || [];
+      const tbody = document.getElementById('dashboard-tbody');
+      const countLabel = document.getElementById('dashboard-count');
+
+      countLabel.innerText = `データ件数: ${submissions.length} 件`;
+
+      if (submissions.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-12 text-center text-slate-400">お申し込みデータはまだありません。画面上の体験ボタンからお申し込みを入力してみてください。</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = submissions.map((sub, idx) => `
+        <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
+          <td class="py-3 px-2 text-slate-500 whitespace-nowrap">${sub.timestamp.split(' ')[1] || sub.timestamp}</td>
+          <td class="py-3 px-2 font-bold whitespace-nowrap">
+            <span class="${sub.type === '資料請求' ? 'text-blue-600 bg-blue-50' : 'text-emerald-600 bg-emerald-50'} px-2 py-0.5 rounded-md">
+              ${sub.type}
+            </span>
+          </td>
+          <td class="py-3 px-2 font-bold text-slate-800">${sub.name}</td>
+          <td class="py-3 px-2 text-slate-500 whitespace-nowrap">${sub.identity}</td>
+          <td class="py-3 px-2 text-slate-600 max-w-xs truncate" title="${sub.date} | ${sub.message}">
+            <strong class="text-slate-800">${sub.date}</strong><br>
+            <span class="text-[10px] text-slate-400">${sub.message}</span>
+          </td>
+          <td class="py-3 px-2 text-center">
+            <button onclick="deleteSubmission(${idx})" class="text-rose-500 hover:text-rose-700 font-bold hover:underline">削除</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // 個別削除
+    function deleteSubmission(index) {
+      const submissions = JSON.parse(localStorage.getItem('oc_submissions')) || [];
+      submissions.splice(index, 1);
+      localStorage.setItem('oc_submissions', JSON.stringify(submissions));
+      renderDashboard();
+    }
+
+    // 全クリア
+    function clearAllSubmissions() {
+      if (confirm('保存されているすべてのお申し込みデモデータを消去しますか？')) {
+        localStorage.removeItem('oc_submissions');
+        // 残枠も初期状態にリセット
+        localStorage.setItem('oc_slots', JSON.stringify(defaultSlots));
+        updateSlotDisplay();
+        renderDashboard();
+        showToast('ダッシュボードのデータを完全にリセットしました。');
+      }
+    }
+
+    // ダッシュボードの背景タップで閉じる
+    dbModal.addEventListener('click', (e) => {
+      if (e.target === dbModal) {
+        toggleDashboard();
+      }
+    });
+
+    // 画面ロード時に残枠表示を更新
+    window.onload = function() {
+      updateSlotDisplay();
+    };
+  </script>
 </body>
 </html>
